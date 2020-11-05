@@ -1,7 +1,11 @@
-# parkerhemphill/godaddy-dns-updater
+# labmaster-kc/godaddy-dns-updater
 ## A simple docker image that uses curl, and a simple shell script to monitor a sub-domain or domain and update GoDaddy DNS records
 [![Docker Stars](https://img.shields.io/docker/stars/parkerhemphill/godaddy-dns-updater)](https://store.docker.com/community/images/parkerhemphill/godaddy-dns-updater) 
 [![Docker Pulls](https://img.shields.io/docker/pulls/parkerhemphill/godaddy-dns-updater)](https://store.docker.com/community/images/parkerhemphill/godaddy-dns-updater)
+### Credit
+* This is a fork of parker-hemphill/godaddy-dns-updater
+* Simple edit to add GoDaddy API Secret, seems to be required now.
+* Also an opportunity for me to start with Github and Docker Hub
 ### Flow of operations:
 * 1: Container starts up and sleeps number of seconds specified by **DNS_CHECK** (Defaults to 900 seconds, or 15 minutes if variable not provided)
 * 2: Once **DNS_CHECK** time has passed, container waits between 1 and 15 seconds (Randomized each time the loop runs so that you can run multiple containers and not cause an API time-out)
@@ -12,7 +16,7 @@
 ### Notes:
 * Required variables have a default set of NULL, the container looks for these and exits with a message of problem in the log file.  An easy way to trouble-shoot container is to map /tmp to an external directory (explained in the docker-compose and docker run example below)
 * Only required ENV variables are **DOMAIN** and **API_KEY**, everything else has valid defaults
-   * Added required ENV variable **API_SECRET**
+   * Labmaster 2020.11.05 - Added required ENV variable **API_SECRET**
 * ENV variables "PUID" and "PGID" can be passed to set owner of logfile to a specific user, this is useful for mapping an external directory and setting the owner to a normal user
 ## Docker-compose example
 * In this example I will be monitoring and updating **cool-site.example.com**, and checking for a change to DNS every 600 seconds (10 minutes)
@@ -23,7 +27,7 @@
 version: "3"
 services:
   godaddy-ddns:
-    image: parkerhemphill/godaddy-dns-updater
+    image: labmasterkc/godaddy-dns-updater
     container_name: godaddy-ddns
     restart: unless-stopped
     environment:
@@ -48,7 +52,7 @@ docker run -d \
   -e DNS_CHECK=600 \
   -v /tmp:/tmp \
   --restart unless-stopped \
-  parkerhemphill/godaddy-dns-updater:latest
+  labmasterkc/godaddy-dns-updater:latest
 ```
 ## Support
 * Shell access while the container is running:<br>
@@ -58,4 +62,4 @@ docker run -d \
 * Container version number:<br>
  `docker inspect -f '{{ index .Config.Labels "build_version" }}' godaddy-dns-updater`
 * Image version number:<br>
- `docker inspect -f '{{ index .Config.Labels "build_version" }}' parkerhemphill/godaddy-dns-updater`
+ `docker inspect -f '{{ index .Config.Labels "build_version" }}' labmasterkc/godaddy-dns-updater`
