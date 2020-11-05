@@ -32,10 +32,10 @@ while :;do
   #Random sleep so multiple site updates doesn't cause API to timeout
   sleep $((RANDOM % 15 + 1))
   myip=`curl -s "https://api.ipify.org"`
-  dnsdata=`curl -s -X GET -H "Authorization: sso-key ${3}" "https://api.godaddy.com/v1/domains/${1}/records/A/${2}"`
+  dnsdata=`curl -s -X GET -H "Authorization: sso-key ${3}:${8}" "https://api.godaddy.com/v1/domains/${1}/records/A/${2}"`
   gdip=`echo $dnsdata | cut -d ',' -f 1 | tr -d '"' | cut -d ":" -f 2`
   if [ "$gdip" != "$myip" -a "$myip" != "" ]; then
-    update_status=$(curl -o /dev/null -w "%{http_code}\n" -s -X PUT "https://api.godaddy.com/v1/domains/${1}/records/A/${2}" -H "Authorization: sso-key ${3}" -H "Content-Type: application/json" -d "[{\"data\": \"${myip}\"}]")
+    update_status=$(curl -o /dev/null -w "%{http_code}\n" -s -X PUT "https://api.godaddy.com/v1/domains/${1}/records/A/${2}" -H "Authorization: sso-key ${3}:${8}" -H "Content-Type: application/json" -d "[{\"data\": \"${myip}\"}]")
     if [[ ${update_status} -eq 200 ]]; then
       echo "[$(TZ=${5} date +%D" "%H:%M" "%Z)] Changed IP on ${domain} from ${gdip} to ${myip}"
       echo "[$(TZ=${5} date +%D" "%H:%M" "%Z)] Changed IP on ${domain} from ${gdip} to ${myip}" >> ${logdest}
