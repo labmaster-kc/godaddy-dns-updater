@@ -18,9 +18,10 @@ RUN chmod +rxxx /opt/godaddy_dns_update
 ENV DOMAIN=${DOMAIN:-NULL}
 ENV SUB_DOMAIN=${SUB_DOMAIN:-@}
 ENV API_KEY=${API_KEY:-NULL}
+ENV API_SECRET=${API_SECRET:-NULL}
 ENV DNS_CHECK=${DNS_CHECK:-900}
 ENV TIME_ZONE=${TIME_ZONE:-America/New_York}
 ENV PUID=${PUID:-0}
 ENV PGID=${PGID:-0}
 
-CMD /opt/godaddy_dns_update ${DOMAIN} ${SUB_DOMAIN} ${API_KEY} ${DNS_CHECK} ${TIME_ZONE} ${PUID} ${PGID}
+CMD /opt/godaddy_dns_update ${DOMAIN} ${SUB_DOMAIN} ${API_KEY} ${DNS_CHECK} ${TIME_ZONE} ${PUID} ${PGID} ${API_SECRET}
