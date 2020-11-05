@@ -12,6 +12,7 @@
 ### Notes:
 * Required variables have a default set of NULL, the container looks for these and exits with a message of problem in the log file.  An easy way to trouble-shoot container is to map /tmp to an external directory (explained in the docker-compose and docker run example below)
 * Only required ENV variables are **DOMAIN** and **API_KEY**, everything else has valid defaults
+   * Added required ENV variable **API_SECRET**
 * ENV variables "PUID" and "PGID" can be passed to set owner of logfile to a specific user, this is useful for mapping an external directory and setting the owner to a normal user
 ## Docker-compose example
 * In this example I will be monitoring and updating **cool-site.example.com**, and checking for a change to DNS every 600 seconds (10 minutes)
@@ -29,6 +30,7 @@ services:
       DOMAIN: 'example.com'
       SUB_DOMAIN: 'cool-site'
       API_KEY: 'GO_DADDY_DNS_API_KEY'
+      API_SECRET: 'GO_DADDY_DNS_API_SECRET'
       DNS_CHECK: 600
       TIME_ZONE: America/New_York
     volumes:
@@ -42,6 +44,7 @@ docker run -d \
   -e DOMAIN=example.com \
   -e SUB_DOMAIN=cool-site \
   -e API_KEY='GO_DADDY_DNS_API_KEY' \
+  -e API_SECRET='GO_DADDY_DNS_API_SECRET' \
   -e DNS_CHECK=600 \
   -v /tmp:/tmp \
   --restart unless-stopped \
